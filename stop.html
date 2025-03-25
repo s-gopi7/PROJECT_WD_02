@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Stopwatch</title>
+<style>
+  body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    font-family: sans-serif;
+    background: linear-gradient(to bottom, #8e2de2, #4a00e0);
+    color: white;
+  }
+
+  .stopwatch {
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  h1 {
+    font-size: 2.5em;
+    margin-bottom: 1rem;
+    color: white;
+  }
+
+  #display {
+    font-size: 3em;
+    margin-bottom: 1rem;
+  }
+
+  #start {
+    background-color: #28a745; /* Green */
+  }
+
+  #start:hover {
+    background-color: #218838;
+  }
+
+  #stop {
+    background-color: #ffc107; /* Yellow/Amber */
+  }
+
+  #stop:hover {
+    background-color: #e0a800;
+  }
+
+  #reset {
+    background-color: #dc3545; /* Red */
+  }
+
+  #reset:hover {
+    background-color: #c82333;
+  }
+
+  button {
+    padding: 0.75rem 1.5rem;
+    font-size: 1em;
+    margin: 0 0.5rem;
+    cursor: pointer;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    transition: background 0.3s ease;
+  }
+</style>
+</head>
+<body>
+  <h1>STOP WATCH</h1>
+  <div class="stopwatch">
+    <div id="display">00:00:00</div>
+    <button id="start">Start</button>
+    <button id="stop">Stop</button>
+    <button id="reset">Reset</button>
+  </div>
+
+  <script>
+    // ... (JavaScript code remains the same) ...
+    const display = document.getElementById('display');
+    const startButton = document.getElementById('start');
+    const stopButton = document.getElementById('stop');
+    const resetButton = document.getElementById('reset');
+
+    let timer;
+    let startTime;
+    let elapsedTime = 0;
+
+    function formatTime(milliseconds) {
+      let seconds = Math.floor(milliseconds / 1000);
+      let minutes = Math.floor(seconds / 60);
+      let hours = Math.floor(minutes / 60);
+
+      seconds %= 60;
+      minutes %= 60;
+      hours %= 24;
+
+      return (
+        (hours < 10 ? '0' : '') + hours + ':' +
+        (minutes < 10 ? '0' : '') + minutes + ':' +
+        (seconds < 10 ? '0' : '') + seconds
+      );
+    }
+
+    function updateDisplay() {
+      display.textContent = formatTime(elapsedTime);
+    }
+
+    function start() {
+      startTime = Date.now() - elapsedTime;
+      timer = setInterval(() => {
+        elapsedTime = Date.now() - startTime;
+        updateDisplay();
+      }, 10);
+      startButton.disabled = true;
+      stopButton.disabled = false;
+    }
+
+    function stop() {
+      clearInterval(timer);
+      startButton.disabled = false;
+      stopButton.disabled = true;
+    }
+
+    function reset() {
+      clearInterval(timer);
+      elapsedTime = 0;
+      updateDisplay();
+      startButton.disabled = false;
+      stopButton.disabled = true;
+    }
+
+    startButton.addEventListener('click', start);
+    stopButton.addEventListener('click', stop);
+    resetButton.addEventListener('click', reset);
+
+    stopButton.disabled = true; // Initially disable stop button
+  </script>
+</body>
+</html>
